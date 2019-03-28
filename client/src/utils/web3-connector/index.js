@@ -1,14 +1,13 @@
 import { Connectors } from 'web3-react';
 const {
-  // MetaMaskConnector,
+  MetaMaskConnector,
   // WalletConnectConnector,
   NetworkOnlyConnector,
 } = Connectors;
 
 const INFURA_API_KEY = process.env.REACT_APP_INFURA_API_KEY || 'e99b01ab413f41e1975e2189dbe507ae';
 
-// const metaMask = new MetaMaskConnector({ supportedNetworks: 1 });
-// const metaMask = new MetaMaskConnector();
+const metaMask = new MetaMaskConnector();
 
 // const walletConnect = new WalletConnectConnector({
 //   bridge: 'https://bridge.walletconnect.org',
@@ -25,8 +24,8 @@ const ganache = new NetworkOnlyConnector({
 });
 
 export const connectors = {
-  // metaMask,
-  //  walletConnect,
+  metaMask,
   infura,
   ganache,
+  //  walletConnect,
 };
