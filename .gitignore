@@ -1,5 +1,7 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
+
+# CLIENT
 # dependencies
 client/node_modules
 client/.pnp
@@ -17,7 +19,9 @@ client/.env.local
 client/.env.development.local
 client/.env.test.local
 client/.env.production.local
-
 client/npm-debug.log*
 client/yarn-debug.log*
 client/yarn-error.log*
+
+# ROOT
+/build
