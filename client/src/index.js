@@ -1,10 +1,19 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import Web3Provider from 'web3-react';
+
+import { connectors } from 'utils/web3-connector';
+
 import './index.scss';
 import App from 'app';
 import * as serviceWorker from './serviceWorker';
 
-ReactDOM.render(<App />, document.getElementById('root'));
+ReactDOM.render(
+  <Web3Provider connectors={connectors}>
+    <App />
+  </Web3Provider>,
+  document.getElementById('root'),
+);
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.

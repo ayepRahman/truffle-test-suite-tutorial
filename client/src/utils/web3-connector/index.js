@@ -21,7 +21,7 @@ const infura = new NetworkOnlyConnector({
 });
 
 const ganache = new NetworkOnlyConnector({
-  providerURL: 'http://localhost:8545',
+  providerURL: 'http://127.0.0.1:8545',
 });
 
 export const connectors = {
