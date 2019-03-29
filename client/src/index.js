@@ -5,7 +5,7 @@ import Web3Provider from 'web3-react';
 import { connectors } from 'utils/web3-connector';
 
 import './index.scss';
-import App from 'app';
+import App from 'ui/app';
 import * as serviceWorker from './serviceWorker';
 
 ReactDOM.render(

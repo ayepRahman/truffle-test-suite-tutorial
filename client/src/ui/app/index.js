@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useWeb3Context } from 'web3-react';
-import { Container, Row, Col } from 'react-bootstrap';
-import Loader from 'react-loader-spinner';
+import { Grid } from '@material-ui/core';
 
 const App = props => {
   const [state, setState] = useState({
@@ -13,10 +12,10 @@ const App = props => {
   const Web3 = web3Context && web3Context.library;
 
   useEffect(() => {
-    const web3Library = web3Context.connectorName === 'ganache' && web3Context.library;
+    const web3Library = web3Context.connectorName === 'metaMask' && web3Context.library;
 
     if (!web3Library) {
-      setConnector('ganache');
+      setConnector('metaMask');
     }
   }, []);
 
@@ -37,24 +36,20 @@ const App = props => {
 
   if (!state.connected) {
     return (
-      <Container className="py-5">
-        <Row className="justify-content-center text-center">
-          <Col xs sm={4}>
-            <Loader type="Puff" color="#00BFFF" height="100" width="100" />
-          </Col>
-        </Row>
-      </Container>
+      <Grid container alignItems="center" justify="center" className="py-5 h-100">
+        <Grid item className="text-center">
+          <Loader type="TailSpin" color="#06C0A5" height="100" width="100" />
+        </Grid>
+      </Grid>
     );
   }
 
   return (
-    <Container className="py-5">
-      <Row className="justify-content-center text-center">
-        <Col xs sm={4}>
-          <h1>Truffle Test Suite Tutorial</h1>
-        </Col>
-      </Row>
-    </Container>
+    <Grid container justify="center" className="py-5">
+      <Grid item xs={4} className="text-center">
+        <h1>Truffle Test Suite Tutorial</h1>
+      </Grid>
+    </Grid>
   );
 };
 
