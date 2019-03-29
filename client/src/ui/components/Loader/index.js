@@ -1,30 +1,26 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Grid } from '@material-ui/core';
-import Loader from 'react-loader-spinner';
+import LoaderSpinner from 'react-loader-spinner';
 
-const Loading = ({ type }) => {
+const Loader = ({ type }) => {
   return (
-    <Grid
-      container
-      style={{ height: '100vh' }}
-      alignItems="center"
-      justify="center"
-      className="py-5 h-100"
-    >
-      <Grid item className="text-center">
-        <Loader type={type} color="#06C0A5" height="100" width="100" />
+    <div style={{ height: '100vh' }}>
+      <Grid container alignItems="center" justify="center" className="py-5 h-100">
+        <Grid item className="text-center">
+          <LoaderSpinner type={type} color="#06C0A5" height="100" width="100" />
+        </Grid>
       </Grid>
-    </Grid>
+    </div>
   );
 };
 
-Loading.propTypes = {
+Loader.propTypes = {
   type: PropTypes.string,
 };
 
-Loading.defaultProps = {
+Loader.defaultProps = {
   type: 'TailSpin',
 };
 
-export default Loading;
+export default Loader;

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useWeb3Context } from 'web3-react';
 import { Grid } from '@material-ui/core';
+import Loader from 'ui/components/Loader';
 
 const App = props => {
   const [state, setState] = useState({
@@ -34,14 +35,8 @@ const App = props => {
   // console.log(account);
   // console.log('account', Web3.eth.defaultAccount);
 
-  if (!state.connected) {
-    return (
-      <Grid container alignItems="center" justify="center" className="py-5 h-100">
-        <Grid item className="text-center">
-          <Loader type="TailSpin" color="#06C0A5" height="100" width="100" />
-        </Grid>
-      </Grid>
-    );
+  if (true) {
+    return <Loader />;
   }
 
   return (
