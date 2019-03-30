@@ -1,12 +1,26 @@
 import React, { useState, useEffect } from 'react';
 import { useWeb3Context } from 'web3-react';
-import { Grid } from '@material-ui/core';
+import {
+  Grid,
+  Card,
+  CardHeader,
+  CardActionArea,
+  CardMedia,
+  CardContent,
+  CardActions,
+  Typography,
+  Button,
+  Link,
+} from '@material-ui/core';
 import Loader from 'ui/components/Loader';
+
+import metaMaskLogo from 'resources/img/metamask.png';
 
 const App = props => {
   const [state, setState] = useState({
     connected: false,
     account: null,
+    web3Status: null,
   });
   const web3Context = useWeb3Context();
   const { setConnector, library, account, active } = web3Context;
@@ -14,7 +28,6 @@ const App = props => {
 
   useEffect(() => {
     const web3Library = web3Context.connectorName === 'metaMask' && web3Context.library;
-
     if (!web3Library) {
       setConnector('metaMask');
     }
@@ -22,7 +35,6 @@ const App = props => {
 
   useEffect(() => {
     if (active) {
-      Web3.eth.defaultAccount = Web3.eth.accounts[0];
       setState({
         ...state,
         connected: true,
@@ -32,8 +44,34 @@ const App = props => {
 
   console.log('web3', Web3);
   console.log('account', account);
-  // console.log(account);
-  // console.log('account', Web3.eth.defaultAccount);
+  console.log('web3Context', web3Context);
+
+  if (typeof Web3 === 'undefined') {
+    return (
+      <Grid container justify="center" className="py-5">
+        <Grid item xs={4} className="text-center">
+          <Card>
+            <div className="py-3">
+              <img height="140" width="100" src={metaMaskLogo} alt="metamask" />
+            </div>
+            <CardContent>
+              <Typography gutterBottom variant="h5" component="h2">
+                Please intall Metamask
+              </Typography>
+              <Typography component="p">
+                You can install the
+                <Link underline="hover" href="https://metamask.io/">
+                  MetaMask
+                </Link>
+                add-on in Chrome, Firefox, Opera, and the new Brave browser.
+              </Typography>
+              <Typography component="p" />
+            </CardContent>
+          </Card>
+        </Grid>
+      </Grid>
+    );
+  }
 
   if (!state.connected) {
     return <Loader />;

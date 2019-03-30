@@ -11,6 +11,7 @@
     "react-loader-spinner": "^2.3.0",
     "react-scripts": "2.1.8",
     "react-spinners": "^0.5.3",
+    "react-spinners-kit": "^1.9.0",
     "styled-components": "^4.2.0",
     "web3-react": "^3.0.1"
   },

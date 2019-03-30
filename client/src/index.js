@@ -1,7 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import Web3Provider from 'web3-react';
-
 import { connectors } from 'utils/web3-connector';
 
 import './index.scss';
