@@ -35,7 +35,7 @@ const App = props => {
   // console.log(account);
   // console.log('account', Web3.eth.defaultAccount);
 
-  if (true) {
+  if (!state.connected) {
     return <Loader />;
   }
 
