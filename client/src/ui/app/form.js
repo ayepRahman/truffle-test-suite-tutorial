@@ -1,65 +1,46 @@
-import React, { useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { useForm, useField } from 'react-final-form-hooks';
-import * as yup from 'yup';
 
-import { TextField, Paper, DialogActions, Button } from '@material-ui/core';
-
-export const fieldNames = {
-  name: 'name',
-  age: 'age',
-};
+import { TextField, DialogActions, Button } from '@material-ui/core';
+import { validator, fieldNames } from './validator';
 
 const Form = ({ onSubmit }) => {
-  const validate = async values => {
-    let schema = yup.object().shape({
-      name: yup.string().required(),
-      age: yup.number().required(),
-    });
-
-    try {
-      await schema.isValid({});
-    } catch (error) {}
-  };
-
-  const { form, handleSubmit, values, pristine, submitting } = useForm({
+  const { form, handleSubmit, values, submitting } = useForm({
     onSubmit, // the function to call with your form values upon valid submit
-    validate, // a record-level validation function to check all form values
+    validate: validator, // a record-level validation function to check all form values
   });
 
   const nameField = useField(fieldNames.name, form);
   const ageField = useField(fieldNames.age, form);
 
-  const handleChange = field => event => {
-    console.log(field);
-    console.log(event.target.value);
-  };
-
   return (
     <form onSubmit={handleSubmit}>
-      <TextField
-        id={fieldNames.name}
-        name={fieldNames.name}
-        fullWidth
-        error={!!nameField.meta.touched && !!nameField.meta.error}
-        label="Name"
-        value={values[fieldNames.nameField]}
-        // placeholder={currentUser.ethBalance}
-        onChange={handleChange(nameField)}
-        type=""
-      />
+      <div className="pb-3">
+        <TextField
+          id={fieldNames.name}
+          name={fieldNames.name}
+          fullWidth
+          error={!!nameField.meta.touched && !!nameField.meta.error}
+          label={!!nameField.meta.touched && !!nameField.meta.error ? nameField.meta.error : 'Name'}
+          // value={values[fieldNames.nameField]}
+          onChange={nameField.input.onChange}
+          type="text"
+        />
+      </div>
 
-      <TextField
-        id={fieldNames.age}
-        name={fieldNames.age}
-        fullWidth
-        error={!!ageField.meta.touched && !!ageField.meta.error}
-        label="Age"
-        value={values[fieldNames.age]}
-        // placeholder={currentUser.ethBalance}
-        onChange={handleChange(ageField)}
-        type="number"
-      />
+      <div className="pb-3">
+        <TextField
+          id={fieldNames.age}
+          name={fieldNames.age}
+          fullWidth
+          error={!!ageField.meta.touched && !!ageField.meta.error}
+          label={!!ageField.meta.touched && !!ageField.meta.error ? ageField.meta.error : 'Age'}
+          // value={values[fieldNames.age]}
+          onChange={ageField.input.onChange}
+          type="number"
+        />
+      </div>
 
       <DialogActions>
         <Button variant="outlined" type="submit" disabled={submitting}>
@@ -70,6 +51,8 @@ const Form = ({ onSubmit }) => {
   );
 };
 
-Form.propTypes = {};
+Form.propTypes = {
+  onSubmit: PropTypes.func.isRequired,
+};
 
 export default Form;

@@ -9,15 +9,11 @@ import UsersContract from 'contracts/Users.json';
 import truffleContract from 'truffle-contract';
 
 import metaMaskLogo from 'resources/img/metamask.png';
-import { getContractAddress } from 'ethers/utils';
 
 const App = props => {
-  const [state, setState] = useState({
-    account: null,
-    Web3: null,
-    contract: null,
-  });
   const web3Context = useWeb3Context();
+  const [contract, setContract] = useState();
+  const [user, setUser] = useState();
   const { setConnector, library, account, active } = web3Context;
   const Web3 = web3Context && web3Context.library;
 
@@ -30,15 +26,9 @@ const App = props => {
 
   useEffect(() => {
     if (active) {
-      setState({
-        ...state,
-        account,
-        Web3: library,
-      });
-
       getContract();
     }
-  }, [active, Web3]);
+  }, [active]);
 
   const getContract = async () => {
     const contract = truffleContract(UsersContract);
@@ -46,13 +36,11 @@ const App = props => {
 
     try {
       const contractInstance = await contract.deployed();
-      console.log(contractInstance);
-      console.log('STATE -  getContract', state);
+      setContract(contractInstance);
 
-      // setState({
-      //   ...state,
-      //   contract: contractInstance,
-      // });
+      const user = await contractInstance.getUser();
+
+      setUser(user);
     } catch (error) {
       console.log(error.message);
     }
@@ -62,22 +50,22 @@ const App = props => {
   // console.log('account', account);
   // console.log('web3Context', web3Context);
 
-  const onSubmit = values => {
-    console.log(values);
+  const onSubmit = async values => {
+    console.log('ONSUBMIT', values);
+    const { name, age } = values;
+    const newAge = Number(age);
+
+    try {
+      await contract.setUser(name, newAge);
+      const user = await contract.getUser();
+
+      console.log('USER - on submit', user);
+    } catch (error) {
+      console.log(error);
+    }
 
     // here where we submit the value in our smart contract function
   };
-
-  // const validate = values => {
-  //   const errors = {};
-  //   if (!values.firstName) {
-  //     errors.firstName = 'Required';
-  //   }
-  //   if (!values.lastName) {
-  //     errors.lastName = 'Required';
-  //   }
-  //   return errors;
-  // };
 
   if (typeof window.ethereum === 'undefined' || typeof window.web3 === 'undefined') {
     return (
@@ -110,8 +98,9 @@ const App = props => {
     return <Loader />;
   }
 
-  console.log('ACTIVE', active);
-  console.log('STATE -  AFTER ACTIVE', state);
+  // console.log('ACTIVE', active);
+  // console.log('CONTRACT', contract);
+  // console.log('User', user);
 
   return (
     <Fragment>
@@ -123,7 +112,7 @@ const App = props => {
       </Grid>
       <Grid container justify="center" className="py-5">
         <Grid item xs={4} className="text-center">
-          {/* <Form onSubmit={onSubmit} /> */}
+          <Form onSubmit={values => onSubmit(values)} />
         </Grid>
         <Grid />
       </Grid>
