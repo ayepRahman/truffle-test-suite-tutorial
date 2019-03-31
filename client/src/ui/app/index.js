@@ -38,7 +38,15 @@ const App = props => {
       const contractInstance = await contract.deployed();
       setContract(contractInstance);
 
-      const user = await contractInstance.getUser();
+      const response = await contractInstance.getUser();
+
+      console.log('response', response);
+      const age = Web3.utils.BN(response[1]);
+
+      const user = {
+        name: response[0],
+        age: age,
+      };
 
       setUser(user);
     } catch (error) {
@@ -56,10 +64,12 @@ const App = props => {
     const newAge = Number(age);
 
     try {
-      await contract.setUser(name, newAge);
-      const user = await contract.getUser();
+      await contract.setUser(name, newAge, { from: account });
+      const response = await contract.getUser();
 
-      console.log('USER - on submit', user);
+      console.log(response[0], response[1]);
+
+      console.log('USER - on submit response', response);
     } catch (error) {
       console.log(error);
     }
@@ -100,7 +110,7 @@ const App = props => {
 
   // console.log('ACTIVE', active);
   // console.log('CONTRACT', contract);
-  // console.log('User', user);
+  console.log('User', user);
 
   return (
     <Fragment>

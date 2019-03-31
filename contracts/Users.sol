@@ -9,7 +9,7 @@ contract Users {
    age = _age;
   }
 
-  function getUser() public view returns (string memory, uint) {
+  function getUser() public view returns (string memory, uint)  {
     return (name, age);
   }
 }
