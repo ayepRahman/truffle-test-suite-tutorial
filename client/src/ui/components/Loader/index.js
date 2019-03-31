@@ -8,7 +8,7 @@ const Loader = ({ color }) => {
     <div style={{ height: '100vh' }}>
       <Grid container alignItems="center" justify="center" className="py-5 h-100">
         <Grid item className="text-center">
-          <MagicSpinner color="gray" size={50} />
+          <MagicSpinner color="gray" size={80} />
         </Grid>
       </Grid>
     </div>

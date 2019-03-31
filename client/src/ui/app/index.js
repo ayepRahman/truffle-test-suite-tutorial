@@ -5,13 +5,17 @@ import Loader from 'ui/components/Loader';
 
 import Form from './form';
 
+import UsersContract from 'contracts/Users.json';
+import truffleContract from 'truffle-contract';
+
 import metaMaskLogo from 'resources/img/metamask.png';
+import { getContractAddress } from 'ethers/utils';
 
 const App = props => {
   const [state, setState] = useState({
-    connected: false,
     account: null,
     Web3: null,
+    contract: null,
   });
   const web3Context = useWeb3Context();
   const { setConnector, library, account, active } = web3Context;
@@ -28,16 +32,35 @@ const App = props => {
     if (active) {
       setState({
         ...state,
-        connected: true,
         account,
         Web3: library,
       });
-    }
-  }, [active]);
 
-  console.log('web3', Web3);
-  console.log('account', account);
-  console.log('web3Context', web3Context);
+      getContract();
+    }
+  }, [active, Web3]);
+
+  const getContract = async () => {
+    const contract = truffleContract(UsersContract);
+    contract.setProvider(Web3.currentProvider);
+
+    try {
+      const contractInstance = await contract.deployed();
+      console.log(contractInstance);
+      console.log('STATE -  getContract', state);
+
+      // setState({
+      //   ...state,
+      //   contract: contractInstance,
+      // });
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
+  // console.log('web3', Web3);
+  // console.log('account', account);
+  // console.log('web3Context', web3Context);
 
   const onSubmit = values => {
     console.log(values);
@@ -83,9 +106,12 @@ const App = props => {
     );
   }
 
-  if (!state.connected) {
+  if (!active) {
     return <Loader />;
   }
+
+  console.log('ACTIVE', active);
+  console.log('STATE -  AFTER ACTIVE', state);
 
   return (
     <Fragment>
@@ -97,7 +123,7 @@ const App = props => {
       </Grid>
       <Grid container justify="center" className="py-5">
         <Grid item xs={4} className="text-center">
-          <Form onSubmit={onSubmit} />
+          {/* <Form onSubmit={onSubmit} /> */}
         </Grid>
         <Grid />
       </Grid>
