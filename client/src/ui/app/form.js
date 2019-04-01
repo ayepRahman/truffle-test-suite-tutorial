@@ -6,7 +6,7 @@ import { TextField, DialogActions, Button } from '@material-ui/core';
 import { validator, fieldNames } from './validator';
 
 const Form = ({ onSubmit }) => {
-  const { form, handleSubmit, values, submitting } = useForm({
+  const { form, handleSubmit, submitting } = useForm({
     onSubmit, // the function to call with your form values upon valid submit
     validate: validator, // a record-level validation function to check all form values
   });
@@ -23,7 +23,6 @@ const Form = ({ onSubmit }) => {
           fullWidth
           error={!!nameField.meta.touched && !!nameField.meta.error}
           label={!!nameField.meta.touched && !!nameField.meta.error ? nameField.meta.error : 'Name'}
-          // value={values[fieldNames.nameField]}
           onChange={nameField.input.onChange}
           type="text"
         />
@@ -36,7 +35,6 @@ const Form = ({ onSubmit }) => {
           fullWidth
           error={!!ageField.meta.touched && !!ageField.meta.error}
           label={!!ageField.meta.touched && !!ageField.meta.error ? ageField.meta.error : 'Age'}
-          // value={values[fieldNames.age]}
           onChange={ageField.input.onChange}
           type="number"
         />

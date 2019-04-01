@@ -110,7 +110,7 @@ const App = props => {
 
   return (
     <Fragment>
-      <Grid container justify="center" className="py-5">
+      <Grid container justify="center" className="pt-5 pb-3">
         <Grid item xs={4} className="text-center">
           <h1>Truffle Test Suite Tutorial</h1>
           {user && (
@@ -122,7 +122,7 @@ const App = props => {
         </Grid>
         <Grid />
       </Grid>
-      <Grid container justify="center" className="py-5">
+      <Grid container justify="center">
         <Grid item xs={4} className="text-center">
           <Form onSubmit={values => onSubmit(values)} />
         </Grid>
