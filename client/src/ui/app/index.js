@@ -14,7 +14,7 @@ const App = props => {
   const web3Context = useWeb3Context();
   const [contract, setContract] = useState();
   const [user, setUser] = useState();
-  const { setConnector, library, account, active } = web3Context;
+  const { setConnector, account, active } = web3Context;
   const Web3 = web3Context && web3Context.library;
 
   useEffect(() => {
@@ -36,15 +36,15 @@ const App = props => {
 
     try {
       const contractInstance = await contract.deployed();
+
       setContract(contractInstance);
 
       const response = await contractInstance.getUser();
-
-      console.log('response', response);
-      const age = Web3.utils.BN(response[1]);
+      const name = response[0];
+      const age = new Web3.utils.BN(response[1]).toNumber(); // converting uint BN to number - toNumber() come from web3.
 
       const user = {
-        name: response[0],
+        name: name,
         age: age,
       };
 
@@ -54,27 +54,25 @@ const App = props => {
     }
   };
 
-  // console.log('web3', Web3);
-  // console.log('account', account);
-  // console.log('web3Context', web3Context);
-
   const onSubmit = async values => {
-    console.log('ONSUBMIT', values);
     const { name, age } = values;
-    const newAge = Number(age);
+    const convertedAge = Number(age);
 
     try {
-      await contract.setUser(name, newAge, { from: account });
+      await contract.setUser(name, convertedAge, { from: account });
       const response = await contract.getUser();
+      const newName = response[0];
+      const newAge = new Web3.utils.BN(response[1]).toNumber();
 
-      console.log(response[0], response[1]);
+      const user = {
+        name: newName,
+        age: newAge,
+      };
 
-      console.log('USER - on submit response', response);
+      setUser(user);
     } catch (error) {
       console.log(error);
     }
-
-    // here where we submit the value in our smart contract function
   };
 
   if (typeof window.ethereum === 'undefined' || typeof window.web3 === 'undefined') {
@@ -108,8 +106,6 @@ const App = props => {
     return <Loader />;
   }
 
-  // console.log('ACTIVE', active);
-  // console.log('CONTRACT', contract);
   console.log('User', user);
 
   return (
@@ -117,6 +113,12 @@ const App = props => {
       <Grid container justify="center" className="py-5">
         <Grid item xs={4} className="text-center">
           <h1>Truffle Test Suite Tutorial</h1>
+          {user && (
+            <div className="pt-3">
+              {user.name && <h3>Name - {user.name}</h3>}
+              {user.age && <h3>Age - {user.age}</h3>}
+            </div>
+          )}
         </Grid>
         <Grid />
       </Grid>
